@@ -1,0 +1,76 @@
+hash: a3c79c8d0865a17628af97208817e137502b4358a54adab92afd6d2e2fb839a1
+updated: 2018-12-10T14:52:43.00213+08:00
+imports:
+- name: github.com/andybalholm/cascadia
+  version: 680b6a57bda4f657485ad44bdea42342ead737bc
+- name: github.com/antchfx/htmlquery
+  version: 9784ecda34b762f95afad99b016b85eaff62a244
+- name: github.com/antchfx/xmlquery
+  version: 431a9e9e7c449f15251e3bb64faeb5565b188990
+- name: github.com/antchfx/xpath
+  version: 4bbdf6db12aa76808d7b25445919943ed27fdcc0
+- name: github.com/gobwas/glob
+  version: e7a84e9525fe90abcda167b604e483cc959ad4aa
+  subpackages:
+  - compiler
+  - match
+  - syntax
+  - syntax/ast
+  - syntax/lexer
+  - util/runes
+  - util/strings
+- name: github.com/gocolly/colly
+  version: a3a4941b2de28593f1ccbec83222c29103dfad5e
+  subpackages:
+  - debug
+  - storage
+- name: github.com/golang/protobuf
+  version: 7716a980bceefe9a0213654823d9ea62d23b87a2
+  subpackages:
+  - proto
+- name: github.com/kennygrant/sanitize
+  version: 06ec0d0dbcd497d01e5189b16f5263f712e61a8e
+- name: github.com/PuerkitoBio/goquery
+  version: 2d2796f41742ece03e8086188fa4db16a3a0b458
+- name: github.com/saintfish/chardet
+  version: 3af4cd4741ca4f3eb0c407c034571a6fb0ea529c
+- name: github.com/temoto/robotstxt
+  version: 97ee4a9ee6ea01ed0bbf0325dd789f74cac6cb94
+- name: golang.org/x/net
+  version: f04abc6bdfa7a0171a8a0c9fd2ada9391044d056
+  subpackages:
+  - context
+  - html
+  - html/atom
+  - html/charset
+- name: golang.org/x/text
+  version: 4d1c5fb19474adfe9562c9847ba425e7da817e81
+  subpackages:
+  - encoding
+  - encoding/charmap
+  - encoding/htmlindex
+  - encoding/internal
+  - encoding/internal/identifier
+  - encoding/japanese
+  - encoding/korean
+  - encoding/simplifiedchinese
+  - encoding/traditionalchinese
+  - encoding/unicode
+  - internal/language
+  - internal/language/compact
+  - internal/tag
+  - internal/utf8internal
+  - language
+  - runes
+  - transform
+- name: google.golang.org/appengine
+  version: ae0ab99deb4dc413a2b4bd6c8bdd0eb67f1e4d06
+  subpackages:
+  - internal
+  - internal/base
+  - internal/datastore
+  - internal/log
+  - internal/remote_api
+  - internal/urlfetch
+  - urlfetch
+testImports: []
