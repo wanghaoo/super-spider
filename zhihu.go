@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "github.com/go-sql-driver/mysql"
 	"fmt"
 	"github.com/gocolly/colly"
 	"log"
@@ -34,7 +35,7 @@ func main() {
 
 func crawlingZhihuRecommend() {
 	c := colly.NewCollector(
-		colly.AllowedDomains("www.zhihu.com"),
+		colly.AllowedDomains("oceanus.tongdun.cn"),
 	)
 	c.OnHTML("div.Topstory-recommend", func(element *colly.HTMLElement) {
 		element.ForEach("div.Card.TopstoryItem.TopstoryItem-isRecommend", func(i int, element *colly.HTMLElement) {
