@@ -7,6 +7,7 @@ import (
   "errors"
   "fmt"
   "encoding/json"
+  "strconv"
   "time"
   sq "github.com/Masterminds/squirrel"
   "database/sql"
@@ -54,7 +55,7 @@ var (
   DBProxy    sq.DBProxyBeginner
 )
 
-
+const DBURL = "friends:Klfq_fds1@tcp(122.112.157.77:3306)/friends?charset=utf8mb4&parseTime=True&loc=Asia%2FShanghai"
 func OpenDB() sq.DBProxyBeginner {
   var err error
   db, err = sql.Open("mysql", DBURL)
@@ -85,7 +86,7 @@ func main() {
   OpenDB()
   var i = 1
   for {
-    url := fmt.Sprintf("https://oceanus.tongdun.cn/ruleengine/activity/history.json?operationType=doSearch&eventType=&policySetName=All&riskType=&riskStatus=&downRiskScore=&upRiskScore=&searchField=accountLogin&searchValue=&startDate=1586707200995&endDate=1586793600000&pageSize=50&curPage=%d&totalCount=32912&tdTraceId=1586865563503", i)
+    url := fmt.Sprintf("https://oceanus.tongdun.cn/ruleengine/activity/history.json?operationType=doSearch&eventType=&policySetName=All&riskType=&riskStatus=&downRiskScore=&upRiskScore=&searchField=accountLogin&searchValue=&startDate=1587008896585&endDate=1587028142559&pageSize=50&curPage=%d&totalCount=32912&tdTraceId=1586865563503", i)
     i ++
     response, err := doHttp(url, "GET", nil, nil)
     if err != nil {
@@ -107,11 +108,19 @@ func main() {
       }
       detail := Detail{}
       json.Unmarshal([]byte(detailJson), &detail)
-      _, err = sq.Insert("tongdun_data").Columns("accountName, accountMobile, mobileAddressCity, idNumber, riskStatus, riskScore").
-        Values(detail.Attr.ActivityMap.AccountName, detail.Attr.ActivityMap.AccountMobile, detail.Attr.ActivityMap.MobileAddressCity, detail.Attr.ActivityMap.IdNumber, detail.Attr.EventResultMap.RiskStatus, detail.Attr.EventResultMap.RiskScore).
-        RunWith(db).Exec()
-      if err != nil {
-        fmt.Println("insert into mysql error: ", err.Error())
+      if len(detail.Attr.EventResultMap.RiskScore) > 0 {
+        score, err := strconv.Atoi(detail.Attr.EventResultMap.RiskScore)
+        if err != nil {
+          continue
+        }
+        if score >= 50 && score <= 75 {
+          _, err = sq.Insert("tongdun_data").Columns("accountName, accountMobile, mobileAddressCity, idNumber, riskStatus, riskScore").
+            Values(detail.Attr.ActivityMap.AccountName, detail.Attr.ActivityMap.AccountMobile, detail.Attr.ActivityMap.MobileAddressCity, detail.Attr.ActivityMap.IdNumber, detail.Attr.EventResultMap.RiskStatus, detail.Attr.EventResultMap.RiskScore).
+            RunWith(db).Exec()
+          if err != nil {
+            fmt.Println("insert into mysql error: ", err.Error())
+          }
+        }
       }
     }
   }
