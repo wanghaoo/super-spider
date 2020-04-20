@@ -86,7 +86,7 @@ func main() {
   OpenDB()
   var i = 1
   for {
-    url := fmt.Sprintf("https://oceanus.tongdun.cn/ruleengine/activity/history.json?operationType=doSearch&eventType=&policySetName=All&riskType=&riskStatus=&downRiskScore=&upRiskScore=&searchField=accountLogin&searchValue=&startDate=1587008896585&endDate=1587028142559&pageSize=50&curPage=%d&totalCount=32912&tdTraceId=1586865563503", i)
+    url := fmt.Sprintf("https://oceanus.tongdun.cn/ruleengine/activity/history.json?operationType=doSearch&eventType=&policySetName=All&riskType=&riskStatus=&downRiskScore=&upRiskScore=&searchField=accountLogin&searchValue=&startDate=1587225600000&endDate=1587277474766&pageSize=50&curPage=%d&totalCount=32912&tdTraceId=1586865563503", i)
     i ++
     response, err := doHttp(url, "GET", nil, nil)
     if err != nil {
@@ -97,7 +97,7 @@ func main() {
     for _, d := range data.Attr.Datas {
       second := RandRange(5 , 10)
       time.Sleep(time.Duration(second) * time.Second)
-      detailUrl := fmt.Sprintf("https://oceanus.tongdun.cn/ruleengine/activity/history.json?operationType=showDetail&evnetType=&sequenceId=%s&tdTraceId=1586865563503", d.SequenceId)
+      detailUrl := fmt.Sprintf("https://oceanus.tongdun.cn/ruleengine/activity/history.json?operationType=showDetail&evnetType=&sequenceId=%s&tdTraceId=%d", d.SequenceId, time.Now().UnixNano() / 1e6)
       detailJson, err := requestDetail(detailUrl, "GET")
       if err != nil {
         fmt.Println(err)
@@ -113,7 +113,7 @@ func main() {
         if err != nil {
           continue
         }
-        if score >= 50 && score <= 75 {
+        if score <= 20 {
           _, err = sq.Insert("tongdun_data").Columns("accountName, accountMobile, mobileAddressCity, idNumber, riskStatus, riskScore").
             Values(detail.Attr.ActivityMap.AccountName, detail.Attr.ActivityMap.AccountMobile, detail.Attr.ActivityMap.MobileAddressCity, detail.Attr.ActivityMap.IdNumber, detail.Attr.EventResultMap.RiskStatus, detail.Attr.EventResultMap.RiskScore).
             RunWith(db).Exec()
@@ -135,7 +135,7 @@ func requestDetail(url string, method string) (string, error) {
   request.Header.Set("Host", "oceanus.tongdun.cn")
   cookie := new(http.Cookie)
   cookie.Name = "TSESSIONID"
-  cookie.Value = "DCYJU14V-P3DEAV80XNJQETLQ38AS1-MU4IUZ8K-V0TT1"
+  cookie.Value = "DCYJID6V-P90F8VJL0XUET9CP75UR2-8CBAP69K-N2"
   request.AddCookie(cookie)
   response, err := client.Do(request)
   if err != nil {
@@ -157,7 +157,7 @@ func doHttp(url string, method string, param map[string]interface{}, auth map[st
   request.Header.Set("Host", "oceanus.tongdun.cn")
   cookie := new(http.Cookie)
   cookie.Name = "TSESSIONID"
-  cookie.Value = "DCYJU14V-P3DEAV80XNJQETLQ38AS1-MU4IUZ8K-V0TT1"
+  cookie.Value = "DCYJID6V-P90F8VJL0XUET9CP75UR2-8CBAP69K-N2"
   request.AddCookie(cookie)
   response, err := client.Do(request)
   if err != nil {
