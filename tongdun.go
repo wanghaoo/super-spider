@@ -86,7 +86,7 @@ func main() {
   OpenDB()
   var i = 1
   for {
-    url := fmt.Sprintf("https://oceanus.tongdun.cn/ruleengine/activity/history.json?operationType=doSearch&eventType=&policySetName=All&riskType=&riskStatus=&downRiskScore=&upRiskScore=&searchField=accountLogin&searchValue=&startDate=1587225600000&endDate=1587277474766&pageSize=50&curPage=%d&totalCount=32912&tdTraceId=1586865563503", i)
+    url := fmt.Sprintf("https://oceanus.tongdun.cn/ruleengine/activity/history.json?operationType=doSearch&eventType=&policySetName=All&riskType=&riskStatus=&downRiskScore=&upRiskScore=&searchField=accountLogin&searchValue=&startDate=1587398400000&endDate=1587484800000&pageSize=50&curPage=%d&totalCount=32912&tdTraceId=1587433730756", i)
     i ++
     response, err := doHttp(url, "GET", nil, nil)
     if err != nil {
@@ -113,7 +113,7 @@ func main() {
         if err != nil {
           continue
         }
-        if score <= 20 {
+        if score >= 20 && score <= 70 {
           _, err = sq.Insert("tongdun_data").Columns("accountName, accountMobile, mobileAddressCity, idNumber, riskStatus, riskScore").
             Values(detail.Attr.ActivityMap.AccountName, detail.Attr.ActivityMap.AccountMobile, detail.Attr.ActivityMap.MobileAddressCity, detail.Attr.ActivityMap.IdNumber, detail.Attr.EventResultMap.RiskStatus, detail.Attr.EventResultMap.RiskScore).
             RunWith(db).Exec()
